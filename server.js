@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 
 // use express to handle data parsing
 app.use(express.json());
-app.use(express.urlencoded({ extend: true}));
+app.use(express.urlencoded({ extend: true }));
 app.use(express.static('Develop/public'));
 
 // You will need use your routes to connect each html ex "require('../../api')" "require('../../html')"
@@ -22,6 +22,18 @@ app.use(express.static('Develop/public'));
 
 //HTML ROUTE - Path = app.Get('../htmlpath', (req,res) => { res.sendfile(path.join(__dirname, '../htmlpath'));});
 //Default route app.get('*', (req,res) => { res.sendfile(path.join(__dirname, '../htmlpath'));});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Develop/public/index.html'));
+});
+
+app.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Develop/public/notes.html'));
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Develop/public/index.html'));
+});
 
 
 
