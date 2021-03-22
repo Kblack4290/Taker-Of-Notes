@@ -39,11 +39,11 @@ app.post('/api/notes', (req, res) => {
     const {title, text} = req.body
     let newNote = {title:title, text:text, id:Math.floor(Math.random()*100)}
     //pushes notes to the aside
-    getNotes.push(newNote);
+    getNotes.push(req.body);
 
     //telling the application to write the note on the dom in the aside
     fs.writeFileSync(path.join(__dirname, 'Develop/db/db.json'), JSON.stringify(getNotes));
-    res.json(newNote);
+    res.json(req.body);
 });
 
 // deletes notes in any order using splice - source = https://www.codota.com/code/javascript/functions/express/Router/delete
@@ -70,9 +70,9 @@ app.get('/notes', (req, res) => {
 });
 
 // if there is not response then the user will be brought back to the get started page
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'Develop/public/index.html'));
-// });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Develop/public/index.html'));
+});
 
 
 
