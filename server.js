@@ -5,6 +5,7 @@ const fs = require('fs');
 const express = require('express');
 const path = require('path')
 const app = express();
+const { v4: uuidv4 } = require('uuid');
 
 // gets saved notes from db.json
 let getNotes = JSON.parse(fs.readFileSync(path.join(__dirname, 'Develop/db/db.json')))
@@ -36,22 +37,23 @@ app.get('/api/notes', (req, res) => {
 // saves the note on the aside
 app.post('/api/notes', (req, res) => {
 
-    const {title, text} = req.body
-    let newNote = {title:title, text:text, id:Math.floor(Math.random()*100)}
+    const { title, text } = req.body
+    let newNote = { title: title, text: text, id: Math.floor(Math.random() * 100) }
     //pushes notes to the aside
-    getNotes.push(req.body);
+    getNotes.push(newNote);
 
     //telling the application to write the note on the dom in the aside
     fs.writeFileSync(path.join(__dirname, 'Develop/db/db.json'), JSON.stringify(getNotes));
-    res.json(req.body);
+    res.json(getNotes);
 });
 
 // deletes notes in any order using splice - source = https://www.codota.com/code/javascript/functions/express/Router/delete
 app.delete('/api/notes/:id', (req, res) => {
 
     let deleteNotes = req.params.id;
-
-    getNotes.splice(deleteNotes, 1)
+    console.log(deleteNotes);
+    getNotes = getNotes.filter(note => note.id != deleteNotes)
+    fs.writeFileSync(path.join(__dirname, 'Develop/db/db.json'), JSON.stringify(getNotes));
     res.json(req.body)
 });
 
